@@ -1,0 +1,107 @@
+Enter password: *
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 4
+Server version: 10.10.2-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database quiz4;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use quiz4;
+Database changed
+
+MariaDB [quiz4]> create table if not exists squirrel_sighting
+    -> (
+    -> squirrel_sighting_id int not null primary key,
+    -> color_key varchar(10) not null,
+    -> activity varchar(30) not null,
+    -> age varchar(30) not null,
+    -> date date not null,
+    -> time time not null,
+    -> location_id int not null);
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [quiz4]> show tables;
++-------------------+
+| Tables_in_quiz4   |
++-------------------+
+| squirrel_sighting |
++-------------------+
+1 row in set (0.006 sec)
+
+MariaDB [quiz4]> create table if not exists location (
+    -> location_id int not null primary key,
+    -> longitude real not null,
+    -> latitude real not null,
+    -> quad varchar(10) not null);
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [quiz4]> show tables;
++-------------------+
+| Tables_in_quiz4   |
++-------------------+
+| location          |
+| squirrel_sighting |
++-------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [quiz4]> create table if not exists appearance (
+    -> color_key varchar(10) not null primary key,
+    -> primary_color varchar(10) not null,
+    -> secondary_color varchar(10) not null);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [quiz4]> show tables;
++-------------------+
+| Tables_in_quiz4   |
++-------------------+
+| appearance        |
+| location          |
+| squirrel_sighting |
++-------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [quiz4]> describe appearance;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| color_key       | varchar(10) | NO   | PRI | NULL    |       |
+| primary_color   | varchar(10) | NO   |     | NULL    |       |
+| secondary_color | varchar(10) | NO   |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.012 sec)
+
+MariaDB [quiz4]> SELECT VERSION();
++-----------------+
+| VERSION()       |
++-----------------+
+| 10.10.2-MariaDB |
++-----------------+
+1 row in set (0.001 sec)
+
+MariaDB [quiz4]> describe location;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| location_id | int(11)     | NO   | PRI | NULL    |       |
+| longitude   | double      | NO   |     | NULL    |       |
+| latitude    | double      | NO   |     | NULL    |       |
+| quad        | varchar(10) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.009 sec)
+MariaDB [quiz4]> INSERT INTO squirrel_sighting VALUES(1, 'BrOr', 'sleeping', 'juvenile', current_date, current_time, 1);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [quiz4]> select * from squirrel_sighting;
++----------------------+-----------+----------+----------+------------+----------+-------------+
+| squirrel_sighting_id | color_key | activity | age      | date       | time     | location_id |
++----------------------+-----------+----------+----------+------------+----------+-------------+
+|                    1 | BrOr      | sleeping | juvenile | 2022-11-28 | 01:11:50 |           1 |
++----------------------+-----------+----------+----------+------------+----------+-------------+
+1 row in set (0.001 sec)
+
+MariaDB [quiz4]> INSERT INTO location VALUES(1, -73.95613449,40.79408239, 'west');
+Query OK, 1 row affected (0.001 sec)
